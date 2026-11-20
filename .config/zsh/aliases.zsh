@@ -152,3 +152,51 @@ alias guncommit='git reset --soft HEAD~1'
 # [cd -] Return to the previous visited directory (cd -)
 alias -- -='cd -'
 
+# Safe rm wrapper (also used by `sudo rm` via `_RM_SUDO=1` in sudo.zsh)
+rm() {
+    local -a runner=(command rm)
+    [[ -n "$_RM_SUDO" ]] && runner=(command sudo rm)
+
+    local -a targets
+    local end_of_opts=0 arg
+
+    for arg in "$@"; do
+        if (( ! end_of_opts )) && [[ "$arg" == "--" ]]; then
+            end_of_opts=1
+        elif (( ! end_of_opts )) && [[ "$arg" == -* && "$arg" != "-" ]]; then
+            if [[ "$arg" == "--help" || "$arg" == "--version" ]]; then
+                "${runner[@]}" "$@"
+                return
+            fi
+        else
+            targets+=("$arg")
+        fi
+    done
+
+    if (( ${#targets} == 0 )); then
+        "${runner[@]}" "$@"
+        return
+    fi
+
+    local reply
+    if (( ${#targets} == 1 )); then
+        read -r "reply?Are you sure to delete '${targets[1]}'? [y/n] "
+    else
+        print -u2 "About to delete ${#targets} items:"
+        if (( ${#targets} <= 15 )); then
+            printf '  %s\n' "${targets[@]}" >&2
+        else
+            printf '  %s\n' "${targets[1,15]}" >&2
+            print -u2 "  ... and $(( ${#targets} - 15 )) more"
+        fi
+        read -r "reply?Are you sure to delete all ${#targets} items? [y/n] "
+    fi
+
+    if [[ "$reply" == [yY] ]]; then
+        "${runner[@]}" "$@"
+    else
+        print -u2 "Aborted."
+        return 1
+    fi
+}
+

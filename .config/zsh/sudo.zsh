@@ -11,5 +11,11 @@ sudo() {
         return
     fi
 
+    if [[ "$1" == "rm" ]]; then
+        shift
+        _RM_SUDO=1 rm "$@"
+        return
+    fi
+
     command sudo "$@"
 }

@@ -1,16 +1,16 @@
 # Modern CLI replacements
 
 # [eza --icons] Better ls
-alias ls='eza --icons'
+alias ls='eza --icons=auto'
 
 # [eza -lhg --icons --git] Detailed listing
-alias ll='eza -lhg --icons --git'
+alias ll='eza -lhg --icons=auto --git'
 
 # [eza -lahg --icons --git] Detailled listing including hidden files
-alias la='eza -lahg --icons --git'
+alias la='eza -lahg --icons=auto --git'
 
 # [eza --tree --icons] Tree view
-alias tree='eza --tree --icons'
+alias tree='eza --tree --icons=auto'
 
 # [bat] cat to bat
 alias cat='bat'

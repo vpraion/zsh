@@ -1,6 +1,9 @@
 #!/usr/bin/env zsh
 # History
 
+# Create dir if it doesn't exist
+[[ -d "${XDG_STATE_HOME:-$HOME/.local/state}/zsh" ]] || mkdir -p "${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
+
 HISTFILE="$XDG_STATE_HOME/zsh/history" # Defines where history file is located
 HISTSIZE=100000 # Number of entries on RAM
 SAVEHIST=100000 # Number of entries on Storage

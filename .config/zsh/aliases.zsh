@@ -152,6 +152,10 @@ alias guncommit='git reset --soft HEAD~1'
 # [cd -] Return to the previous visited directory (cd -)
 alias -- -='cd -'
 
+# Nix
+# [sudo nixos-rebuild switch --flake ~/.dotfiles/nix#desktop] Generate nix config
+alias nixr='sudo nixos-rebuild switch --flake ~/.dotfiles/nix#desktop'
+
 # Safe rm wrapper (also used by `sudo rm` via `_RM_SUDO=1` in sudo.zsh)
 rm() {
     local -a runner=(command rm)
